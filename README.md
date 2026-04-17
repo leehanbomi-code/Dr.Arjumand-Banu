@@ -1,11 +1,23 @@
-<div align="center">
+# Dr. Arjumand Learning App 🚀
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+An awesome AI-powered learning application built for students.
 
-  <h1>Built with AI Studio</h2>
+## 📱 Mobile Ready
+This project is configured with **Capacitor**, allowing it to be deployed to the **Apple App Store** and **Google Play Store**.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🛠️ Tech Stack
+- **React** (Vite)
+- **Tailwind CSS** (Styling)
+- **Capacitor** (Native Mobile Bridge)
+- **Firebase** (Database & Auth)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🚀 How to Run Locally
+1. Clone the repository
+2. Run `npm install`
+3. Run `npm run dev` to start the web preview
 
-</div>
+## 📱 Build for Mobile
+- **Android**: `npm run build && npx cap sync android && npx cap open android`
+- **iOS**: `npm run build && npx cap sync ios && npx cap open ios`
+
+Made with ❤️ and AI.

@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isVerified() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // --- Users Collection ---
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      
+      // Validation for User Preferences
+      function isValidUserPreference(data) {
+        return data.keys().hasAll(['teachingStyle', 'updatedAt'])
+          && data.teachingStyle in ['simple', 'real-life', 'visual', 'advanced']
+          && (data.get('hasAgreedToPrivacy', null) == null || data.hasAgreedToPrivacy is bool)
+          && data.updatedAt is timestamp
+          && data.keys().size() <= 4;
+      }
+
+      allow create: if isOwner(userId) 
+        && isValidUserPreference(request.resource.data)
+        && request.resource.data.updatedAt == request.time;
+
+      allow update: if isOwner(userId)
+        && isValidUserPreference(request.resource.data)
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['teachingStyle', 'hasAgreedToPrivacy', 'updatedAt']);
+
+      // --- History Subcollection ---
+      match /history/{messageId} {
+        allow list: if isOwner(userId);
+        
+        function isValidMessage(data) {
+          return data.keys().hasAll(['role', 'content', 'timestamp'])
+            && data.role in ['user', 'model']
+            && data.content is string
+            && data.content.size() <= 10000
+            && data.timestamp is timestamp
+            && data.keys().size() == 3;
+        }
+
+        allow create: if isOwner(userId)
+          && isValidMessage(request.resource.data)
+          && request.resource.data.timestamp == request.time;
+          
+        // No updates or deletes for history items to ensure integrity
+        allow update, delete: if false;
+      }
+    }
+  }
+}

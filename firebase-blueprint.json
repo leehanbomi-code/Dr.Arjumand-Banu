@@ -1,0 +1,36 @@
+{
+  "entities": {
+    "UserPreference": {
+      "title": "User Preference",
+      "description": "User learning preferences and settings",
+      "type": "object",
+      "properties": {
+        "teachingStyle": { "type": "string", "enum": ["simple", "real-life", "visual", "advanced"] },
+        "hasAgreedToPrivacy": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["teachingStyle"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "A single message in a chat history",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["role", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserPreference",
+      "description": "Individual user preferences"
+    },
+    "/users/{userId}/history/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "User's chat message history"
+    }
+  }
+}

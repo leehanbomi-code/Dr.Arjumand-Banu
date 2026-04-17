@@ -1,0 +1,22 @@
+{
+  "name": "Dr. Arjumand",
+  "short_name": "Dr. Arjumand",
+  "description": "Adaptive AI-powered personal learning assistant.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/dr-arjumand-192/192/192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://picsum.photos/seed/dr-arjumand-512/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
