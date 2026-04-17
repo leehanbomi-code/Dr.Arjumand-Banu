@@ -1,4 +1,4 @@
-# Dr. Arjumand Learning App ✨🚀
+# Dr. Arjumand Learning App ✨🚀❤️
 
 An awesome AI-powered learning application built for students.
 
