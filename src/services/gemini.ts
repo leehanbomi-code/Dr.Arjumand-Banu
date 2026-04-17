@@ -1,7 +1,22 @@
 import { GoogleGenAI } from "@google/genai";
 import { ChatStyle } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (aiInstance) return aiInstance;
+  
+  // Use VITE_ prefix for client-side keys if provided, or fallback to process.env for local development
+  const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : '');
+  
+  if (!apiKey) {
+    console.warn("GEMINI_API_KEY is missing. AI features will be disabled.");
+    return null;
+  }
+  
+  aiInstance = new GoogleGenAI(apiKey);
+  return aiInstance;
+};
 
 export const getGeminiChatResponse = async (
   message: string, 
@@ -9,6 +24,11 @@ export const getGeminiChatResponse = async (
   history: { role: 'user' | 'model', parts: { text: string }[] }[] = []
 ) => {
   const model = "gemini-3-flash-preview";
+  const ai = getAI();
+
+  if (!ai) {
+    return "The AI assistant is currently unavailable (API Key missing). Please contact the administrator.";
+  }
 
   const PRIVACY_GUARDRAIL = `
 STRICT PRIVACY RULES & SYSTEM CONSEQUENCES:

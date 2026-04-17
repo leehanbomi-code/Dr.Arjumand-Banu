@@ -4,9 +4,15 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, query
 import firebaseConfig from '../../firebase-applet-config.json';
 import { ChatStyle } from '../types';
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+const isConfigValid = firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId;
+
+if (!isConfigValid) {
+  console.warn("Firebase configuration is missing or incomplete. Some features may be limited.");
+}
+
+const app = isConfigValid ? initializeApp(firebaseConfig) : null;
+export const auth = app ? getAuth(app) : ({} as any);
+export const db = app ? getFirestore(app, firebaseConfig.firestoreDatabaseId) : ({} as any);
 export const googleProvider = new GoogleAuthProvider();
 
 export interface UserPrefs {

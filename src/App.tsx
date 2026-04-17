@@ -55,6 +55,8 @@ export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   React.useEffect(() => {
+    if (!auth?.onAuthStateChanged) return;
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
@@ -62,6 +64,10 @@ export default function App() {
   }, []);
 
   const handleLogin = async () => {
+    if (!auth?.currentUser) {
+      console.warn("Auth service not initialized");
+      return;
+    }
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
