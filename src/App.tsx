@@ -21,6 +21,7 @@ import {
   Star,
   ChevronRight,
   Play,
+  Flame,
   Award,
   LogIn,
   LogOut,
