@@ -98,7 +98,7 @@ export default function App() {
       <nav className="w-20 md:w-64 flex flex-col sidebar-natural border-r border-brand-primary/10 h-full p-4 shrink-0 overflow-y-auto">
         <div className="flex items-center gap-3 px-2 mb-10 overflow-hidden text-brand-primary">
           <div className="p-2 bg-brand-primary rounded-xl text-white">
-            <Zap className="w-6 h-6" />
+            <Flame className="w-6 h-6" />
           </div>
           <span className="text-xl font-display font-bold hidden md:block">Dr. Arjumand</span>
         </div>
